@@ -1,32 +1,33 @@
 const siteData = require('../data/siteData')
-const bookInventory = require('../data/bookInventory');
+//const bookInventory = require('../data/bookInventory');
+
+// require bookModel:
+const Book = require('../models/bookModel')
 
 const getAllBooks = async (request, response, next) => {
-  if (200) {
-    response.status(200).json({
-      success: { message: "This route points to the Books page with all of the books" },
-      data: bookInventory, siteData,
-      statusCode: 200,
-    })
-  } else {
-    response.status(400).json({
-      error: { message: "Resource not found. Search again." },
-      statusCode: 400,
-    })
-  }
+      await Book.find({}).then((books) =>
+
+        response.status(200).json({
+          success: { message: "This route points to the Books page with all of the books" },
+          data: books, siteData,
+          statusCode: 200,
+        })
+      )
 };
 
 const getBook = async (request, response, next) => {
   const { _id } = request.params;
 
-  const foundBook = bookInventory.find(bookInventory => bookInventory._id === Number(_id));
+  //const foundBook = bookInventory.find(bookInventory => bookInventory._id === Number(_id));
 
-  if (200) {
-     response.status(200).json({
+  await Book.findOne({_id: _id}).then((books) => {
+    response.status(200).json({
       success: { message: "This route points to the Books page with one of the books by the ID" },
-      data: foundBook, siteData,
+      data: books, siteData,
       statusCode: 200,
-    });    //if NOT searching by ID
+    });
+  });
+    //if NOT searching by ID
 
     //if searching by the ID, comment out lines 26-29 and uncomment the code block below.
     /*
@@ -42,13 +43,6 @@ const getBook = async (request, response, next) => {
       console.log("This book doesn't exist. Try searching again.");        
       };
     */ 
-    
-  } else {
-    response.status(400).json({
-      error: { message: "Resource not found. Search again." },
-      statusCode: 400,
-    })
-  }
 };
 
 
