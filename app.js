@@ -10,7 +10,7 @@ const cors = require('cors');
 // Path module
 const path = require('node:path');
 const helmet = require('helmet');
-const session = require('session');
+const session = require('express-session');
 const passport = require('passport');
 const PORT = process.env.PORT || 4000; // port change to minimize server clashes
 
